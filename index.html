@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Find Fun Nearby</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href="src/css/jquery-ui.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="src/css/style.css">
+</head>
+<body>
+    <header class = "wrapper" align="center">
+       <div id ="search-bar" data-bind="jqControlgroup:true">
+            <label id="find" class="ui-widget ui-controlgroup-item ui-button ui-corner-left">Find:</label>
+            <select id="search-query-text" class="ui-widget ui-controlgroup-item ui-button" data-bind="value:searchQuery, event:{change:queryInputCheck} ">
+                <option  value="food">Food</option>
+                <option  value="nightlife">Nightlife</option>
+                <option  value="fun">Fun</option>
+                <option  value="shopping">Shopping</option>
+            </select>
+            <label id = "nearby" class="ui-widget ui-controlgroup-item ui-button">Nearby:</label>
+            <span class="ui-widget ui-widget-content ui-spinner ui-controlgroup-item ui-corner-right">
+                <input class="" id="search-zoom-text" type="text" placeholder="Enter City Name:(Ex: New York, NY)" data-bind="addressAutocomplete:searchInfo">
+            </span>
+        </div>
+    </header>
+    <main id="map"></main>
+    <nav class = result-filter >
+        <img id="filterIcon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADnSURBVEhL7Y2xDcIwAAQDFQNQMwAIpqCDEZiJEsQiLMAAVJQUVEgsAf/EL1nGjuOEBAn5pFNMYv6KTAIzOC2P/bGAD+OcL/pA0aexl7gd3Rs7j7vRgbHTuC8qOotzKBQVX4/XiYqvxVOionW8SVQ0jreJiuS4HT3CJlHB/3IjGrejdAfbwg3tBeNbyAtn8/SFT1BDrvzmorA22fhgCDdwDXmpKnyDVyPPsTA3uc1GkBWMhSfvXyU8x8LcjJLDNjlM/id8gQfHOwyF+c29z43kcJW+cJW1wmO4jDiCgmffHVtuZn5BUbwAxk6wK21WKXUAAAAASUVORK5CYII=" data-bind="click:hideAside" alt="filterIcon">
+        <span id="filter" data-bind="visible:visibleButton()">Filter:</span>
+        <span id="btn-sort" class = "ui-button ui-corner-right ui-corner-left" data-bind="click:sortByPrice, visible:visibleButton()">Price</span>
+        <span id="btn-sort" class = "ui-button ui-corner-right ui-corner-left" data-bind="click:sortByRating, visible:visibleButton()">Rating</span>
+        <span class="ui-widget ui-widget-content ui-spinner ui-controlgroup-item ui-corner-right" >
+            <input class="" id="filter-text" type="text" placeholder="(Ex: pizza)" data-bind="value:sortCategory,valueUpdate:'afterkeydown', enterKey:sortByCategory, visible:visibleButton()">
+        </span>
+        <img data-bind="click:sortBack, visible:visibleButton()" id="filterIcon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHvSURBVEhL7dZNSxVRHMfxG0mLopDARS4CLZVSc2mCvQa3RYqvQRdlr6BFb6CND4gLU4lKXEj7Nu3b5EJalqIrwYcevt+8fxjkXs4cHS4E/eADw9w553/nzMw5p/Y/iVzGCJ5iGlP1Y8+1ofLcxzx28LsJf1vAILJzC49OD//mBmZxjEbFGvkJ/+RNlE4nTvAS/fiC6NDiy3Bo7+BaXR+e4A0OEddvwT5K5Sqi4a/C8Tt0IZW7eItot48BlMoRoqE+4hJy8hwOue2/ogPJ/ECxsDbhY8iJxaO9zzwZ/2GxaPgGhzIn72Fb7z75tn9GFPsO3+ox+Pxz4x+NR5e869d4hVE4YVw0q7Cw33kV/ZWOn1+MoDNcy9KLKPzYE63KdURh5/eWpXRhV5krp4eVxCk1Cjcc6tv4hANMeqKijCMKD3vibHzVd+EFzrdVJT4nZ8Smn9MivMiVqMcTF4x9lJpAnNZiVdpA7uJQjG0/wL5capOrVNy1nOjPmxeIfuY8kUo7thGNniHnzr12BjFyLjqldyNDKC6P6+hGKi4KMbzag/u1rFjcpTA68YVbQXHr4+Rwr35uDcVNhHfqb+eKw76E4jYoxbXXpTRrs9csD+BL5x6qUTH5aPxkSm/wcuIE8BATiA29O0xnpJautf9aarU/Jweuq/Vu/zkAAAAASUVORK5CYII=" alt="filterIcon">
+    </nav>
+    <aside class="search-result-content" data-bind="visible:visibleButton()">
+        <div id="errorMsg" data-bind="if:errorMsg()">
+            <div class="errorTitle">OOOOPS!</div>
+            <div class="errorContent" data-bind="text:errorMsg"></div>
+        </div>
+        <div id="searchResultList" data-bind="foreach: searchResultList" style="display: none">
+            <div class="resultHeader" data-bind="attr:{id:placeNum}">
+                <img class="resultIcon" data-bind="attr:{src:defaultIcon.url}"  alt="resultIcon">
+                <span class="resultTitle" data-bind="text:title, click:popMarker"></span>
+                <span class="ui-corner-right ui-corner-left resultRating" data-bind="text:rating"></span>
+            </div>
+            <div class="placeInfo">
+                <strong>Tel:&nbsp;&nbsp;</strong><span data-bind="text: phone"> </span><br>
+                <strong>Address:&nbsp;&nbsp;</strong><span data-bind="text: address"> </span><br>
+                <strong>Price:&nbsp;&nbsp;</strong> <span data-bind="text: formatPrice()"> </span><br>
+                <strong>openNow:&nbsp;&nbsp;</strong><span data-bind="text: openHour"> </span><br>
+            </div>
+            <hr>
+        </div>
+    </aside>
+    <script src="src/js/lib/jquery.min.js"></script>
+    <script src="src/js/lib/knockout.js"></script>
+    <script src="src/js/app.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyA22Y6vCjpUxHyEfJxhhe6Sz4WZp3SzYyQ&v=3&callback=initMap" async defer" onerror="googleMapApiError()"">
+    </script>
+</body>
+</html>
