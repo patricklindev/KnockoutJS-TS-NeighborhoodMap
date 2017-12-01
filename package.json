@@ -12,6 +12,6 @@
   "devDependencies": {
     "@types/googlemaps": "^3.30.0",
     "@types/jquery": "^3.2.16",
-    "@types/knockout": "^3.4.47",
+    "@types/knockout": "^3.4.47"
   }
 }

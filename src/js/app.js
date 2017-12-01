@@ -153,6 +153,7 @@ class ViewModel {
         this.sortCategory = ko.observable();
         this.sortPriceMethod = "lowToHigh";
         this.sortRatingMethod = "HighToLow";
+        this.placeholderValue = ko.observable("(Ex:pizza)");
         const self = this;
         // Custom binding for enterKey
         ko.bindingHandlers.enterKey = self.keyupBindingFactory(KEY_ENTER);
@@ -207,16 +208,16 @@ class ViewModel {
     queryInputCheck() {
         switch (this.searchQuery()) {
             case "food":
-                $("#filter-text").attr("placeholder", "(EX:pizza)");
+                this.placeholderValue("(EX:pizza)");
                 break;
             case "fun":
-                $("#filter-text").attr("placeholder", "(EX:park)");
+                this.placeholderValue("(EX:park)");
                 break;
             case "nightlife":
-                $("#filter-text").attr("placeholder", "(EX:bar)");
+                this.placeholderValue("(EX:bar)");
                 break;
             case "shopping":
-                $("#filter-text").attr("placeholder", "(EX:shop)");
+                this.placeholderValue("(EX:shop)");
                 break;
             default:
                 break;
@@ -322,6 +323,7 @@ class ViewModel {
         const self = this;
         ko.utils.arrayForEach(self.searchResultList(), function (placeInfo) {
             placeInfo.marker.setMap(self.map);
+            placeInfo.display(true);
         });
     }
     clearMap() {
@@ -412,13 +414,12 @@ class ViewModel {
         for (i = 0; i < self.searchResultList().length; i++) {
             if (!self.searchResultList()[i].category.toLowerCase().includes(category.toLowerCase())) {
                 self.searchResultList()[i].marker.setMap(null);
-                self.searchResultList.remove(self.searchResultList()[i]);
-                i--;
+                self.searchResultList()[i].display(false);
             }
         }
     }
     sortBack() {
-        this.zoomArea();
+        this.showMarkers();
     }
     hideAside() {
         if (this.visibleButton())
@@ -432,6 +433,7 @@ class ViewModel {
  */
 class PlaceInfo {
     constructor(title, address, location, placeNum, phone = "", price = "", rating = "", openHour = "", category = "none") {
+        this.display = ko.observable(true);
         const self = this;
         self.title = title;
         self.address = address;

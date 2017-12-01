@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <meta charset="utf-8">
+    <meta charset="utf-8">  
     <title>Find Fun Nearby</title>
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link href="src/css/jquery-ui.css" rel="stylesheet">
@@ -31,7 +31,7 @@
         <span id="btn-sort" class = "ui-button ui-corner-right ui-corner-left" data-bind="click:sortByPrice, visible:visibleButton()">Price</span>
         <span id="btn-sort" class = "ui-button ui-corner-right ui-corner-left" data-bind="click:sortByRating, visible:visibleButton()">Rating</span>
         <span class="ui-widget ui-widget-content ui-spinner ui-controlgroup-item ui-corner-right" >
-            <input class="" id="filter-text" type="text" placeholder="(Ex: pizza)" data-bind="value:sortCategory,valueUpdate:'afterkeydown', enterKey:sortByCategory, visible:visibleButton()">
+            <input class="" id="filter-text" type="text" data-bind="value:sortCategory,valueUpdate:'afterkeydown', enterKey:sortByCategory, visible:visibleButton(), attr:{placeholder: placeholderValue}">
         </span>
         <img data-bind="click:sortBack, visible:visibleButton()" id="filterIcon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHvSURBVEhL7dZNSxVRHMfxG0mLopDARS4CLZVSc2mCvQa3RYqvQRdlr6BFb6CND4gLU4lKXEj7Nu3b5EJalqIrwYcevt+8fxjkXs4cHS4E/eADw9w553/nzMw5p/Y/iVzGCJ5iGlP1Y8+1ofLcxzx28LsJf1vAILJzC49OD//mBmZxjEbFGvkJ/+RNlE4nTvAS/fiC6NDiy3Bo7+BaXR+e4A0OEddvwT5K5Sqi4a/C8Tt0IZW7eItot48BlMoRoqE+4hJy8hwOue2/ogPJ/ECxsDbhY8iJxaO9zzwZ/2GxaPgGhzIn72Fb7z75tn9GFPsO3+ox+Pxz4x+NR5e869d4hVE4YVw0q7Cw33kV/ZWOn1+MoDNcy9KLKPzYE63KdURh5/eWpXRhV5krp4eVxCk1Cjcc6tv4hANMeqKijCMKD3vibHzVd+EFzrdVJT4nZ8Smn9MivMiVqMcTF4x9lJpAnNZiVdpA7uJQjG0/wL5capOrVNy1nOjPmxeIfuY8kUo7thGNniHnzr12BjFyLjqldyNDKC6P6+hGKi4KMbzag/u1rFjcpTA68YVbQXHr4+Rwr35uDcVNhHfqb+eKw76E4jYoxbXXpTRrs9csD+BL5x6qUTH5aPxkSm/wcuIE8BATiA29O0xnpJautf9aarU/Jweuq/Vu/zkAAAAASUVORK5CYII=" alt="filterIcon">
     </nav>
@@ -41,18 +41,20 @@
             <div class="errorContent" data-bind="text:errorMsg"></div>
         </div>
         <div id="searchResultList" data-bind="foreach: searchResultList" style="display: none">
-            <div class="resultHeader" data-bind="attr:{id:placeNum}">
-                <img class="resultIcon" data-bind="attr:{src:defaultIcon.url}"  alt="resultIcon">
-                <span class="resultTitle" data-bind="text:title, click:popMarker"></span>
-                <span class="ui-corner-right ui-corner-left resultRating" data-bind="text:rating"></span>
+            <div data-bind="visible:display">
+                <div class="resultHeader" data-bind="attr:{id:placeNum}">
+                    <img class="resultIcon" data-bind="attr:{src:defaultIcon.url}"  alt="resultIcon">
+                    <span class="resultTitle" data-bind="text:title, click:popMarker"></span>
+                    <span class="ui-corner-right ui-corner-left resultRating" data-bind="text:rating"></span>
+                </div>
+                <div class="placeInfo">
+                    <strong>Tel:&nbsp;&nbsp;</strong><span data-bind="text: phone"> </span><br>
+                    <strong>Address:&nbsp;&nbsp;</strong><span data-bind="text: address"> </span><br>
+                    <strong>Price:&nbsp;&nbsp;</strong> <span data-bind="text: formatPrice()"> </span><br>
+                    <strong>openNow:&nbsp;&nbsp;</strong><span data-bind="text: openHour"> </span><br>
+                </div>
+                <hr>                
             </div>
-            <div class="placeInfo">
-                <strong>Tel:&nbsp;&nbsp;</strong><span data-bind="text: phone"> </span><br>
-                <strong>Address:&nbsp;&nbsp;</strong><span data-bind="text: address"> </span><br>
-                <strong>Price:&nbsp;&nbsp;</strong> <span data-bind="text: formatPrice()"> </span><br>
-                <strong>openNow:&nbsp;&nbsp;</strong><span data-bind="text: openHour"> </span><br>
-            </div>
-            <hr>
         </div>
     </aside>
     <script src="src/js/lib/jquery.min.js"></script>
