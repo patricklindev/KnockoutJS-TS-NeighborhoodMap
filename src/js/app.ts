@@ -11,8 +11,7 @@ class Utils {
     }
 
     public static screenCheck() {
-        if (window.innerWidth < 740) {
-            $('meta[name=viewport]').attr('content', 'initial-scale=0.45, user-scalable=no');
+        if (window.innerWidth < 740) {            $('meta[name=viewport]').attr('content', 'initial-scale=0.45, user-scalable=no');
             $(".placeInfo").css("font-size", "15px");
         }
         $(".search-result-content").css("max-height", function() {
@@ -158,6 +157,7 @@ class ViewModel {
     public sortCategory = ko.observable<string>();
     public sortPriceMethod = "lowToHigh";
     public sortRatingMethod = "HighToLow";
+    public placeholderValue = ko.observable("(Ex:pizza)");
 
     public constructor(public map: google.maps.Map, public infoWindow: google.maps.InfoWindow) {
 
@@ -229,16 +229,16 @@ class ViewModel {
     public queryInputCheck() {
         switch (this.searchQuery()) {
             case "food":
-                $("#filter-text").attr("placeholder", "(EX:pizza)");
+                this.placeholderValue("(EX:pizza)");
                 break;
             case "fun":
-                $("#filter-text").attr("placeholder", "(EX:park)");
+                this.placeholderValue("(EX:park)");
                 break;
             case "nightlife":
-                $("#filter-text").attr("placeholder", "(EX:bar)");
+                this.placeholderValue("(EX:bar)");
                 break;
             case "shopping":
-                $("#filter-text").attr("placeholder", "(EX:shop)");
+                this.placeholderValue("(EX:shop)");
                 break;
             default:
                 break;
@@ -347,6 +347,7 @@ class ViewModel {
         const self = this;
         ko.utils.arrayForEach<PlaceInfo>(self.searchResultList(), function(placeInfo) {
             placeInfo.marker.setMap(self.map);
+            placeInfo.display(true);
         });
     }
 
@@ -424,14 +425,13 @@ class ViewModel {
         for (i = 0; i < self.searchResultList().length; i++) {
             if (!self.searchResultList()[i].category.toLowerCase().includes(category.toLowerCase())) {
                 self.searchResultList()[i].marker.setMap(null);
-                self.searchResultList.remove(self.searchResultList()[i]);
-                i--;
+                self.searchResultList()[i].display(false);
             }
         }
     }
 
     public sortBack() {
-        this.zoomArea();
+        this.showMarkers();
     }
 
     public hideAside() {
@@ -465,6 +465,7 @@ class PlaceInfo {
     public marker: google.maps.Marker;
     public infoWindow: google.maps.InfoWindow;
     public map: google.maps.Map;
+    public display = ko.observable(true);
 
     public constructor(title: string, address: string, location: google.maps.LatLngLiteral, placeNum: string, phone = "", price = "", rating = "", openHour = "", category = "none") {
         const self = this;
