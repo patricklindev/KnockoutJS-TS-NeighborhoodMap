@@ -12,7 +12,7 @@ class Utils {
 
     public static screenCheck() {
         if (window.innerWidth < 740) {
-            $('meta[name=viewport]').attr('content', 'initial-scale=0.45, user-scalable=no');
+            $('meta[name=viewport]').attr('content', 'initial-scale=0.9, user-scalable=no');
             $(".placeInfo").css("font-size", "15px");
         }
         $(".search-result-content").css("max-height", function() {
