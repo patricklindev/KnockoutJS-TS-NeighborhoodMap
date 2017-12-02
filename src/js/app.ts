@@ -11,16 +11,14 @@ class Utils {
     }
 
     public static screenCheck() {
-<<<<<<< HEAD
         if (window.innerWidth < 740) {
-            $('meta[name=viewport]').attr('content', 'initial-scale=0.9, user-scalable=no');
-||||||| merged common ancestors
-        if (window.innerWidth < 740) {
-            $('meta[name=viewport]').attr('content', 'initial-scale=0.45, user-scalable=no');
-=======
-        if (window.innerWidth < 740) {            $('meta[name=viewport]').attr('content', 'initial-scale=0.45, user-scalable=no');
->>>>>>> 24948ab16104525ba8034c4122478af65e6d8a17
-            $(".placeInfo").css("font-size", "15px");
+            if (window.innerWidth < 375 || window.innerHeight < 375)
+                $("meta[name=viewport]").attr("content", "initial-scale=0.8, user-scalable=no");
+            else
+                $("meta[name=viewport]").attr("content", "initial-scale=0.9, user-scalable=no");
+
+            $("#search-zoom-text").css("width", "280px");
+            $("#search-zoom-text").attr("placeholder", "City Name:(Ex: New York, NY)");
         }
         $(".search-result-content").css("max-height", function() {
             let maxHeight = window.innerHeight - 125;
@@ -28,7 +26,6 @@ class Utils {
         });
     }
 }
-
 /*
 ==============Globle variable and constraints================
  */
@@ -149,7 +146,7 @@ function initMap() {
     vm.zoomArea();
 }
 // Onerror function for async defer google map api
-function googleMapApiError(){
+function googleMapApiError() {
     alert("Oooops!\nSomething wrong with loading google map api.");
 }
 /*
@@ -166,6 +163,7 @@ class ViewModel {
     public sortPriceMethod = "lowToHigh";
     public sortRatingMethod = "HighToLow";
     public placeholderValue = ko.observable("(Ex:pizza)");
+    public hideIconUrl = ko.observable("./src/css/images/icons8-up-left-30.png");
 
     public constructor(public map: google.maps.Map, public infoWindow: google.maps.InfoWindow) {
 
@@ -234,7 +232,7 @@ class ViewModel {
     }
 
     // Using event to interact with user. check if the Address is empty and guide for filter.
-    public queryInputCheck() {
+    public queryInputCheck(): void {
         switch (this.searchQuery()) {
             case "food":
                 this.placeholderValue("(EX:pizza)");
@@ -256,7 +254,7 @@ class ViewModel {
         this.zoomArea();
     }
 
-    public inputCheck() {
+    public inputCheck(): void {
         if (this.searchInfo() === '') {
             window.alert('Please enter an area, or address.');
         } else {
@@ -265,7 +263,7 @@ class ViewModel {
     }
 
     // Main search function using Foursquare API
-    public zoomArea() {
+    public zoomArea(): void {
         const self = this;
         let zoomUrl = "https://api.foursquare.com/v2/venues/explore?near=" + this.searchInfo() + "&query=" + this.searchQuery() + "&client_id=" + CLIENT_ID_FOURSQUARE + "&client_secret=" + CLIENT_SECRET_FOURSQUARE + "&v=20171101";
         const bounds = new google.maps.LatLngBounds();
@@ -344,14 +342,14 @@ class ViewModel {
         });
     }
 
-    public addSearchResult(title: string, address: string, location: google.maps.LatLngLiteral, placeNum: string, phone = "", price = "", rating = "", openHour = "", category = "") {
+    public addSearchResult(title: string, address: string, location: google.maps.LatLngLiteral, placeNum: string, phone = "", price = "", rating = "", openHour = "", category = ""): void {
         const self = this;
         const sResult = new PlaceInfo(title, address, location, placeNum, phone, price, rating, openHour, category);
         sResult.setInfoWindow(self.infoWindow, self.map);
         self.searchResultList.push(sResult);
     }
 
-    public showMarkers() {
+    public showMarkers(): void {
         const self = this;
         ko.utils.arrayForEach<PlaceInfo>(self.searchResultList(), function(placeInfo) {
             placeInfo.marker.setMap(self.map);
@@ -359,7 +357,7 @@ class ViewModel {
         });
     }
 
-    public clearMap() {
+    public clearMap(): void {
         const self = this;
         self.errorMsg("");
         self.closeInfoWindow();
@@ -367,18 +365,18 @@ class ViewModel {
         self.searchResultList.removeAll();
     }
 
-    public clearMarkers() {
+    public clearMarkers(): void {
         const self = this;
         ko.utils.arrayForEach<PlaceInfo>(self.searchResultList(), function(placeInfo) {
             placeInfo.marker.setMap(null);
         });
     }
-    public closeInfoWindow() {
+    public closeInfoWindow(): void {
         this.infoWindow.set("marker", null)
         this.infoWindow.close();
     }
 
-    public sortByPrice() {
+    public sortByPrice(): void {
         const self = this;
         if (self.sortPriceMethod === "lowToHigh") {
             self.sortPriceMethod = "HighToLow";
@@ -402,7 +400,7 @@ class ViewModel {
         }
     }
 
-    public sortByRating() {
+    public sortByRating(): void {
         const self = this;
         if (self.sortRatingMethod === "lowToHigh") {
             self.sortRatingMethod = "HighToLow";
@@ -426,7 +424,7 @@ class ViewModel {
         }
     }
 
-    public sortByCategory() {
+    public sortByCategory(): void {
         const self = this;
         const category = self.sortCategory();
         let i = 0;
@@ -438,15 +436,18 @@ class ViewModel {
         }
     }
 
-    public sortBack() {
+    public sortBack(): void {
         this.showMarkers();
     }
 
-    public hideAside() {
-        if (this.visibleButton())
+    public hideAside(): void {
+        if (this.visibleButton()) {
+            this.hideIconUrl("./src/css/images/icons8-down-right-30.png");
             this.visibleButton(false);
-        else
+        } else {
+            this.hideIconUrl("./src/css/images/icons8-up-left-30.png");
             this.visibleButton(true);
+        }
     }
 
 }
@@ -561,11 +562,11 @@ class PlaceInfo {
           <strong id="powerBy">Power by Foursquare API</strong>
         </div>
         <div id="pano"></div>`);
-
             const radius = 50;
             const streetViewService = new google.maps.StreetViewService();
             streetViewService.getPanoramaByLocation(self.location, radius, function(data, status) {
                 if (status === google.maps.StreetViewStatus.OK) {
+                    $("#pano").css("height", "150px").css("width", "250px");
                     const nearStreetViewLocation = self.marker.getPosition();
                     const heading = google.maps.geometry.spherical.computeHeading(
                         nearStreetViewLocation, nearStreetViewLocation);
@@ -576,22 +577,18 @@ class PlaceInfo {
                             pitch: 30
                         }
                     };
-
                     const divPano = document.getElementById("pano");
                     if (divPano) {
                         const panorama = new google.maps.StreetViewPanorama(divPano, panoramaOptions);
                     }
 
-                } else {
-                    $("#pano").css("diplay", "none");
                 }
             });
-
             // Open the infowindow on the correct marker.
             infowindow.open(self.map, self.marker);
             self.map.setZoom(15);
             self.map.setCenter(self.location);
-            self.map.panBy(-200, -200);
+            self.map.panBy(-200, -250);
         }
     }
 

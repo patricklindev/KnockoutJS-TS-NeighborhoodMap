@@ -18,6 +18,7 @@ body {
   }
 #search-bar{
       margin-top: 20px;
+      text-align: center;
   }
 
 #search-zoom-text {
@@ -43,26 +44,39 @@ body {
 #search-query-text{
     width: 150px;
   }
-  #filterIcon{
+#filterIcon1,
+#filterIcon2{
+    cursor: pointer;
+    vertical-align: middle;
     border: 1px solid #999999;
-  }
+}
 
-
-#filterIcon:hover{
+#filterIcon1:hover,
+#filterIcon2:hover{
     border: 1px solid #999999;
     background: #ccd232 url("images/ui-bg_diagonals-small_75_ccd232_40x40.png") 50% 50% repeat;
     color: #212121
   }
-  #btn-sort:hover,
-  #search-zoom-button:hover {
+
+#btn-sort1,
+#btn-sort2{
+    background:rgba(255,255,255, .1);
+    width: 40px;
+}
+
+
+#btn-sort1:hover,
+#btn-sort2:hover,
+#search-zoom-button:hover {
 
     background: #ccd232 url("images/ui-bg_diagonals-small_75_ccd232_40x40.png") 50% 50% repeat;
     font-weight: bold;
-    ;
-  }
-  #btn-sort:active,
-  #search-query-text:hover,
-  #search-zoom-button:active {
+}
+
+#btn-sort1:active,
+#btn-sort2:active,
+#search-query-text:hover,
+#search-zoom-button:active {
     border: 1px solid #332e30;
     background: #332e30 url("images/ui-bg_diagonals-small_40_332e30_40x40.png") 50% 50% repeat;
     font-weight: bold;
@@ -76,10 +90,10 @@ body {
 
 }
 
-#pano {
+/*#pano {
     width: 250px;
     height: 200px;
-  }
+  }*/
 
 .result-filter{
     position: absolute;
@@ -127,10 +141,6 @@ body {
 .resultIcon{
     vertical-align: middle;
   }
-  #filterIcon{
-    cursor: pointer;
-    vertical-align: middle;
-  }
 
 .resultTitle {
     display: inline-block;
@@ -155,7 +165,7 @@ body {
     text-align: center;
 
 }
-  .resultRating{
+.resultRating{
     float: right;
     width: 23px;
     font-weight: bold;
@@ -164,9 +174,9 @@ body {
     margin-right: 5px;
     margin-top:5px;
     text-align: center;
-  }
+}
 
-  #powerBy{
+#powerBy{
     float: right;
     color:rgba(31,81,22,0.7);
 
@@ -196,10 +206,6 @@ body {
   width: 90px;
 }
 
-#btn-sort{
-    background:rgba(255,255,255, .1);
-    width: 40px;
-  }
 
 @media only screen and (min-width: 650px) and (max-width: 750px) {
   #find{

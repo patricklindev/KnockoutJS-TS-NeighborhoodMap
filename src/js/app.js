@@ -12,8 +12,12 @@ class Utils {
     }
     static screenCheck() {
         if (window.innerWidth < 740) {
-            $('meta[name=viewport]').attr('content', 'initial-scale=0.9, user-scalable=no');
-            $(".placeInfo").css("font-size", "15px");
+            if (window.innerWidth < 375 || window.innerHeight < 375)
+                $("meta[name=viewport]").attr("content", "initial-scale=0.8, user-scalable=no");
+            else
+                $("meta[name=viewport]").attr("content", "initial-scale=0.9, user-scalable=no");
+            $("#search-zoom-text").css("width", "280px");
+            $("#search-zoom-text").attr("placeholder", "City Name:(Ex: New York, NY)");
         }
         $(".search-result-content").css("max-height", function () {
             let maxHeight = window.innerHeight - 125;
@@ -154,6 +158,7 @@ class ViewModel {
         this.sortPriceMethod = "lowToHigh";
         this.sortRatingMethod = "HighToLow";
         this.placeholderValue = ko.observable("(Ex:pizza)");
+        this.hideIconUrl = ko.observable("./src/css/images/icons8-up-left-30.png");
         const self = this;
         // Custom binding for enterKey
         ko.bindingHandlers.enterKey = self.keyupBindingFactory(KEY_ENTER);
@@ -422,10 +427,14 @@ class ViewModel {
         this.showMarkers();
     }
     hideAside() {
-        if (this.visibleButton())
+        if (this.visibleButton()) {
+            this.hideIconUrl("./src/css/images/icons8-down-right-30.png");
             this.visibleButton(false);
-        else
+        }
+        else {
+            this.hideIconUrl("./src/css/images/icons8-up-left-30.png");
             this.visibleButton(true);
+        }
     }
 }
 /*
@@ -517,6 +526,7 @@ class PlaceInfo {
             const streetViewService = new google.maps.StreetViewService();
             streetViewService.getPanoramaByLocation(self.location, radius, function (data, status) {
                 if (status === google.maps.StreetViewStatus.OK) {
+                    $("#pano").css("height", "150px").css("width", "250px");
                     const nearStreetViewLocation = self.marker.getPosition();
                     const heading = google.maps.geometry.spherical.computeHeading(nearStreetViewLocation, nearStreetViewLocation);
                     const panoramaOptions = {
@@ -531,15 +541,12 @@ class PlaceInfo {
                         const panorama = new google.maps.StreetViewPanorama(divPano, panoramaOptions);
                     }
                 }
-                else {
-                    $("#pano").css("diplay", "none");
-                }
             });
             // Open the infowindow on the correct marker.
             infowindow.open(self.map, self.marker);
             self.map.setZoom(15);
             self.map.setCenter(self.location);
-            self.map.panBy(-200, -200);
+            self.map.panBy(-200, -250);
         }
     }
 }
