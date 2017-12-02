@@ -10,7 +10,7 @@ In my project I have chosen Google Map Api and foursquare Api. It's one page app
 * Clone this project to your local device (https://github.com/YuhanLin1105/neighborhood-project.git).
 * Change your Google Map API Key in index.html.
 * Change your Foursquare ID AND SECRET in src/js/app.js.
-* Open index.html. You should see the "Neighborhood-project" like [this](https://my-map-search-project.appspot.com/).
+* Open index.html. You should see the "Neighborhood-project" like [this](https://neighborhood-search.appspot.com/).
 
 ## License
 The content of this repository is licensed under a [MIT License](https://choosealicense.com/licenses/mit/)
