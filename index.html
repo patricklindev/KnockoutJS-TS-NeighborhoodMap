@@ -31,17 +31,17 @@
         <span id="btn-sort1" class = "ui-button ui-controlgroup-item" data-bind="click:sortByPrice, visible:visibleButton()">Price</span>
         <span id="btn-sort2" class = "ui-button ui-controlgroup-item" data-bind="click:sortByRating, visible:visibleButton()">Rating</span>
         <span class="ui-widget ui-widget-content ui-spinner ui-controlgroup-item ui-corner-right">
-            <input class="" id="filter-text" type="text" data-bind="value:sortCategory,valueUpdate:'afterkeydown', enterKey:sortByCategory, visible:visibleButton(), attr:{placeholder: placeholderValue}">
+           <input id="filter-text" type="text" data-bind="textInput:sortCategory, visible:visibleButton(), attr:{placeholder: placeholderValue}">
         </span>
-        <img data-bind="click:sortBack, visible:visibleButton()" id="filterIcon2" src="./src/css/images/icons8-undo-26.png" alt="filterIcon2">
+        <img data-bind="click:clearSortText, visible:visibleButton()" id="filterIcon2" src="./src/css/images/icons8-undo-26.png" alt="filterIcon2">
     </nav>
     <aside class="search-result-content" data-bind="visible:visibleButton()">
         <div id="errorMsg" data-bind="if:errorMsg()">
             <div class="errorTitle">OOOOPS!</div>
             <div class="errorContent" data-bind="text:errorMsg"></div>
         </div>
-        <div id="searchResultList" data-bind="foreach: searchResultList" style="display: none">
-            <div data-bind="visible:display">
+        <div id="searchResultList" data-bind="foreach: searchResultFilter" style="display: none">
+            <div>
                 <div class="resultHeader" data-bind="attr:{id:placeNum}">
                     <img class="resultIcon" data-bind="attr:{src:defaultIcon.url}"  alt="resultIcon">
                     <span class="resultTitle" data-bind="text:title, click:popMarker"></span>
