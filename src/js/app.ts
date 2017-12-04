@@ -16,14 +16,9 @@ class Utils {
                 $("meta[name=viewport]").attr("content", "initial-scale=0.8, user-scalable=no");
             else
                 $("meta[name=viewport]").attr("content", "initial-scale=0.9, user-scalable=no");
-
-            $("#search-zoom-text").css("width", "280px");
-            $("#search-zoom-text").attr("placeholder", "City Name:(Ex: New York, NY)");
+        } else {
+            $("meta[name=viewport]").attr("content", "initial-scale=1.0, user-scalable=no");
         }
-        $(".search-result-content").css("max-height", function() {
-            let maxHeight = window.innerHeight - 125;
-            return maxHeight + "px";
-        });
     }
 }
 /*
@@ -142,7 +137,7 @@ function initMap() {
 
     // Create the new ViewModel in the initMap scope to make sure google map api is ready.
     const vm = new ViewModel();
-    vm.setMapInfo(map,mapInfoWindow);
+    vm.setMapInfo(map, mapInfoWindow);
     ko.applyBindings(vm);
     vm.zoomArea();
 }
@@ -166,16 +161,18 @@ class ViewModel {
     public placeholderValue = ko.observable("Ex:pizza");
     public hideIconUrl = ko.observable("./src/css/images/icons8-up-left-30.png");
     public searchResultFilter;
-    public windowWidth;
-    public windowHeight;
-    public screenCheck;
-    public metaContent;
-    public searchTextWidth = ko.observable("310px");
-    public searchResultContentMaxHeight;
+    public textWidth = ko.observable("310px");
+    public textHolder = ko.observable("Enter City Name:(Ex: New York, NY)");
+    public windowHeight = ko.observable(window.innerHeight);
+    public windowWidth = ko.observable(window.innerWidth);
+    public maxHeight;
     public map;
     public infoWindow;
+
     public constructor() {
         const self = this;
+        // Screen check
+        self.winsizeCheck();
         // Array filter for searchResultList
         self.searchResultFilter = ko.computed(() => {
             const sortCategory = self.sortCategory();
@@ -229,7 +226,20 @@ class ViewModel {
 
     }
 
-    setMapInfo(map, mapinfowindow) {
+    public winsizeCheck() {
+        const self = this;
+        window.addEventListener("orientationchange", function() {
+            self.windowHeight(window.innerHeight);
+            self.windowWidth(window.innerWidth);
+        });
+
+        self.maxHeight = ko.computed(function() {
+            const h = self.windowHeight() - 125;
+            return h + "px";
+        });
+    }
+
+    public setMapInfo(map, mapinfowindow) {
         this.map = map;
         this.infoWindow = mapinfowindow;
     }

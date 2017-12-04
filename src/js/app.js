@@ -20,13 +20,10 @@ class Utils {
                 $("meta[name=viewport]").attr("content", "initial-scale=0.8, user-scalable=no");
             else
                 $("meta[name=viewport]").attr("content", "initial-scale=0.9, user-scalable=no");
-            $("#search-zoom-text").css("width", "280px");
-            $("#search-zoom-text").attr("placeholder", "City Name:(Ex: New York, NY)");
         }
-        $(".search-result-content").css("max-height", function () {
-            let maxHeight = window.innerHeight - 125;
-            return maxHeight + "px";
-        });
+        else {
+            $("meta[name=viewport]").attr("content", "initial-scale=1.0, user-scalable=no");
+        }
     }
 }
 /*
@@ -162,8 +159,13 @@ class ViewModel {
         this.sortRatingMethod = "HighToLow";
         this.placeholderValue = ko.observable("Ex:pizza");
         this.hideIconUrl = ko.observable("./src/css/images/icons8-up-left-30.png");
-        this.searchTextWidth = ko.observable("310px");
+        this.textWidth = ko.observable("310px");
+        this.textHolder = ko.observable("Enter City Name:(Ex: New York, NY)");
+        this.windowHeight = ko.observable(window.innerHeight);
+        this.windowWidth = ko.observable(window.innerWidth);
         const self = this;
+        // Screen check
+        self.winsizeCheck();
         // Array filter for searchResultList
         self.searchResultFilter = ko.computed(() => {
             const sortCategory = self.sortCategory();
@@ -209,6 +211,17 @@ class ViewModel {
         };
         // Custom binding for enterKey
         ko.bindingHandlers.enterKey = self.keyupBindingFactory(KEY_ENTER);
+    }
+    winsizeCheck() {
+        const self = this;
+        window.addEventListener("orientationchange", function () {
+            self.windowHeight(window.innerHeight);
+            self.windowWidth(window.innerWidth);
+        });
+        self.maxHeight = ko.computed(function () {
+            const h = self.windowHeight() - 125;
+            return h + "px";
+        });
     }
     setMapInfo(map, mapinfowindow) {
         this.map = map;

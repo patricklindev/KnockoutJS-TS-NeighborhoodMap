@@ -10,7 +10,7 @@
 </head>
 <body>
     <header class = "wrapper">
-       <div id ="search-bar" data-bind="jqControlgroup:true">
+       <div id ="search-bar">
             <label id="find" class="ui-widget ui-controlgroup-item ui-button ui-corner-left">Find:</label>
             <select id="search-query-text" class="ui-widget ui-controlgroup-item ui-button" data-bind="value:searchQuery, event:{change:queryInputCheck} ">
                 <option  value="food">Food</option>
@@ -20,7 +20,7 @@
             </select>
             <label id = "nearby" class="ui-widget ui-controlgroup-item ui-button">Nearby:</label>
             <span class="ui-widget ui-widget-content ui-spinner ui-controlgroup-item ui-corner-right">
-                <input class="" id="search-zoom-text" type="text" placeholder="Enter City Name:(Ex: New York, NY)" data-bind="addressAutocomplete:searchInfo">
+                <input class="" id="search-zoom-text" type="text" placeholder="Enter City Name:(Ex: New York, NY)" data-bind="addressAutocomplete:searchInfo, style:{width:windowWidth()<740?'280px':'310px'}, attr:{placeholder:windowWidth()<740?'City Name:(Ex: New York, NY)':'Enter City Name:(Ex: New York, NY)'}">
             </span>
         </div>
     </header>
@@ -28,14 +28,14 @@
     <nav class = result-filter>
         <img id="filterIcon1" src="./src/css/images/icons8-up-left-30.png" data-bind="click:hideAside, attr:{src:hideIconUrl()}" alt=>
         <span id="filter" data-bind="visible:visibleButton()">Filter:</span>
-        <span id="btn-sort1" class = "ui-button ui-controlgroup-item" data-bind="click:sortByPrice, visible:visibleButton()">Price</span>
-        <span id="btn-sort2" class = "ui-button ui-controlgroup-item" data-bind="click:sortByRating, visible:visibleButton()">Rating</span>
-        <span class="ui-widget ui-widget-content ui-spinner ui-controlgroup-item ui-corner-right">
+        <span id="btn-sort1" class = "ui-button" data-bind="click:sortByPrice, visible:visibleButton()">Price</span>
+        <span id="btn-sort2" class = "ui-button" data-bind="click:sortByRating, visible:visibleButton()">Rating</span>
+        <span class="ui-widget ui-widget-content ui-spinner ui-corner-right">
            <input id="filter-text" type="text" data-bind="textInput:sortCategory, visible:visibleButton(), attr:{placeholder: placeholderValue}">
         </span>
         <img data-bind="click:clearSortText, visible:visibleButton()" id="filterIcon2" src="./src/css/images/icons8-undo-26.png" alt="filterIcon2">
     </nav>
-    <aside class="search-result-content" data-bind="visible:visibleButton()">
+    <aside class="search-result-content" data-bind="visible:visibleButton(), style:{maxHeight:maxHeight()}">
         <div id="errorMsg" data-bind="if:errorMsg()">
             <div class="errorTitle">OOOOPS!</div>
             <div class="errorContent" data-bind="text:errorMsg"></div>
