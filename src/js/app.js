@@ -10,6 +10,10 @@ class Utils {
         };
         return markerImage;
     }
+    
+    /* 
+    Need help here!! I tried a lot to use " ko attr" to modify meta "viewport tag".However it did not work.
+    */
     static screenCheck() {
         if (window.innerWidth < 740) {
             if (window.innerWidth < 375 || window.innerHeight < 375)
