@@ -3,7 +3,7 @@ This is a single-page application featuring a map of your neighborhood or a neig
 
 In my project I have chosen Google Map Api and foursquare Api. It's one page app that uses typescript with knockout.js binding and jQuery.
 
-Click [demo](https://neighborhood-search.appspot.com/) to playground.
+Click [demo](https://neighborhood-search.appspot.com/) to play.
 
 ## Installation
 
