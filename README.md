@@ -1,7 +1,9 @@
-# Neighborhood-project
+# Neighborhood-map
 This is a single-page application featuring a map of your neighborhood or a neighborhood you would like to visit.
 
 In my project I have chosen Google Map Api and foursquare Api. It's one page app that uses typescript with knockout.js binding and jQuery.
+
+Open [demo](https://neighborhood-search.appspot.com/) to playground.
 
 ## Installation
 
